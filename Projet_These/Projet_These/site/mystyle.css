@@ -23,7 +23,7 @@ body {
   list-style-type: none;
   padding-top: 8px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .flex-bar #navBtn {
   border: none;
@@ -32,6 +32,10 @@ body {
   font-size: 18px;
   margin-top: -5px;
   margin-right: 5px;
+}
+.flex-bar .end {
+  display: flex;
+  flex-wrap: nowrap;
 }
 .flex-bar #navBtn:hover {
   color: #607d8b;
@@ -47,6 +51,40 @@ body {
   font-size: 18px;
   padding-right: 15px;
   color: #63a860;
+}
+#pharmName {
+  position: relative;
+  color: whitesmoke;
+  margin-left: -75px;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: -10px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 1px #28a745;
+}
+#pharmName::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 90%;
+  color: #63a860;
+  -webkit-text-stroke: 0px #28a745;
+  border-right: 1px solid #63a860;
+  overflow: hidden;
+  animation: animate 6s linear infinite;
+}
+@keyframes animate {
+  0%,
+  10%,
+  100% {
+    width: 0;
+  }
+  70%,
+  90% {
+    width: 100%;
+  }
 }
 .flex-bar a:hover {
   color: #607d8b;
@@ -66,6 +104,7 @@ body {
   background-color: white;
   padding: 25px 30px;
   border-radius: 20px;
+  z-index: 1;
 }
 .formulaire .titre {
   color: #63a860;
@@ -311,6 +350,7 @@ tr:hover {
 @media (max-width: 768px) {
   .myWebSite .formulaire {
     max-width: 100%;
+    margin-top: 35px;
   }
   .myWebSite .formulaire form .dataInput {
     margin-bottom: 15px;
@@ -322,6 +362,7 @@ tr:hover {
   .flexTable {
     display: flex;
     flex-direction: column;
+    gap: 30px;
   }
   .MedicaleTable {
     max-width: 100%;
@@ -337,6 +378,9 @@ tr:hover {
   th,
   td {
     width: 100%;
+  }
+  #pharmName {
+    margin-left: auto;
   }
 }
 #searchBox {
