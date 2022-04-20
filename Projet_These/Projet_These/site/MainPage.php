@@ -210,9 +210,9 @@ if (isset($_POST['Submit'])){
                   <td>". $row["Nom"]. "</td>
                   <td>". $row["Miligramme"]."</td>
                   <td>". $row["Prix"]."</td>
-                  <td>". $row["Disponible"]."</td>
-                  <td><a href='delete.php?id=". $row["Med_Id"]."' id='btn'><ion-icon name=trash-outline></ion-icon></a></td>
-                  <td> <button type='button' id=". $row["Med_Id"]." class='btn btn-success editbtn'> <ion-icon name=create-sharp></ion-icon> </button></td>
+                  <td><p class='statusdispo'>". $row["Disponible"]."</p></td>
+                  <td class='centerbutton1'><a href='delete.php?id=". $row["Med_Id"]."' id='btn'><ion-icon name=trash-outline></ion-icon></a></td>
+                  <td class='centerbutton1'> <button type='button' id=". $row["Med_Id"]." class='btn btn-success editbtn'> <ion-icon name=create-sharp></ion-icon> </button></td>
                   </tr>";
                 }
                 echo "</table>";
@@ -303,5 +303,19 @@ if (isset($_POST['Submit'])){
             });
         });
     </script>
+
+    <script>
+      var Elements = document.getElementsByClassName('statusdispo');
+      for (let i=0; i< Elements.length; i++){
+          if (Elements[i].innerHTML == "Oui"){
+            Elements[i].style.color = "#388e3c";
+            Elements[i].style.backgroundColor= "#c8e6c9";
+          }
+          else{
+            Elements[i].style.color = "#c62828";
+            Elements[i].style.backgroundColor= "#ffcdd2";
+          }
+      }
+    </script> 
   </body>
 </html>
