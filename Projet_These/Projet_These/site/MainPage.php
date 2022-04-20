@@ -55,17 +55,10 @@ if (isset($_POST['Submit'])){
    <?php 
       include './pharmInfo.php'
    ?>
-   <?php  include '../login/config.php';  
-        $sql ="SELECT Name from pharma_info where Id= '$PharmaID'" ;
-          $result = $mysqli->query($sql);         
-          if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-              $pharmname = $row["Name"];}
-   ?>
     <nav class="navBar">
       <div class="container">
         <ul class="flex-bar">
-         <li><div data-text=<?php echo $pharmname ?> id="pharmName"> <?php echo $pharmname ?> </div></li>    
+         <li><div data-text="Pharmacie..." id="pharmName">Pharmacie...</div></li>    
          <div class="end">
          <li><button type="button" class="btn btn-primary editInfo" data-toggle="modal" data-target="#editModal" id="navBtn">Ma Pharmacie</button></li>
          <li><a href="../login/logout.php">Deconnecter</a></li> 
