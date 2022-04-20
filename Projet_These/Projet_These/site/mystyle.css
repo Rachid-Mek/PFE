@@ -102,9 +102,10 @@ body {
   max-width: 600px;
   width: 100%;
   background-color: white;
-  padding: 25px 30px;
+  padding: 15px 30px;
   border-radius: 20px;
   z-index: 1;
+  margin-top: auto;
 }
 .formulaire .titre {
   color: #63a860;
@@ -339,17 +340,17 @@ tr:hover {
   background-color: #ac392c;
 }
 
-.statusdispo{
+.statusdispo {
   border-radius: 5px;
   background-color: red;
   padding: 0.2rem 1rem;
   margin: 0;
   text-align: center;
-  font-weight:bold;
+  font-weight: bold;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.centerbutton1{
+.centerbutton1 {
   text-align: center;
 }
 
