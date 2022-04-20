@@ -1,4 +1,5 @@
-<?php include '../login/config.php'?>
+<?php include '../login/config.php';
+?>
 <!-- Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -22,7 +23,7 @@
               $pharmname = $row["Name"];
               $pharmPhone1 = $row["Contact_Number1"];
               $pharmPhone2 = $row["Contact_Number2"];
-              if ($pharmPhone2 == "0000000000"){
+              if ($pharmPhone2 == "0"){
                 $pharmPhone2 = "";
               }
               $pharmLocation = $row["Location"];
