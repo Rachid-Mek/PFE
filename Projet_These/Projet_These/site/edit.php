@@ -1,4 +1,6 @@
-<?php include '../login/config.php'?>
+<?php include '../login/config.php';
+?>
+
  <!-- EDIT POP UP FORM (Bootstrap MODAL) -->
  <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -11,7 +13,7 @@
                     </button>
                 </div>
 
-                <form action="updatecode.php" method="POST">
+                <form action="updatecode.php" method="POST" enctype='multipart/form-data'>
 
                     <div class="modal-body">
 
@@ -69,19 +71,26 @@
                             />
                         </div>
 
-                        <div class="radioInput">
-                          <label for="Dispo" class='labelname'>Disponible:</label>
-
-                          <label class="radiochoice"> Oui 
-                            <input type="radio" id="typeD1" name="DispoD" value="Oui" class="form-control"/>
-                            <span class="checkmark"></span>
-                          </label>
-
-                          <label class="radiochoice"> Non
-                            <input type="radio" id="typeD2" name="DispoD" value="Non" class="form-control"/>
-                            <span class="checkmark"></span>
-                          </label>
+                        <div class="form-group">
+                          <label for="QTE"> Quantité:</label>
+                          <input
+                            type="number"
+                            name="QteD"
+                            id="QteP"
+                            placeholder="Tapez la Quantité"
+                            class="form-control"
+                            required     
+                          />
                         </div>
+
+                        <div class="imageInput">
+                        <label for="imageP">Modifier l'Image</label>
+                        <input
+                          type="file" 
+                          name="my_imageD"
+                          id="imageP"
+                        />
+                      </div>
                     </div>
 
                     <div class="modal-footer">
