@@ -9,27 +9,78 @@ if (!isset($_SESSION['username'])) {
 if (isset($_POST['Submit'])){
   $Nom = $_POST['NomP'];
   $Prix = $_POST['Prix'];
-  $Dispo = $_POST['Dispo'];
+  $QTE = $_POST['Qte'];
   $Type = $_POST['typeP'];
   $PharmaID = $_SESSION['username'];
 
+  $Nom = addslashes($Nom);
   if($Type == 'Material Pharmaceutique'){
     $mili = 0;
   }else{
     $mili = $_POST['Milligramme'];
   }
 
-  $sql2 = "INSERT INTO medicament (pharma_Id, Type, Nom, Miligramme, Prix, Disponible)
-            VALUES ('$PharmaID ', '$Type', '$Nom', '$mili', '$Prix', '$Dispo')";
-  $result2 = $mysqli->query($sql2);
-  if ($result2){
-    $Nom = "";
-    $Prix = "";
-    $Dispo = "";
-    $Type = "";
-    header("Location: MainPage.php");
-  }else{
-    echo"<script>alert('oops! erreur')</script>";
+  if(isset($_FILES['my_image'])){
+    $img_name = $_FILES['my_image']['name'];
+    $img_size = $_FILES['my_image']['size'];
+    $tmp_name = $_FILES['my_image']['tmp_name'];
+    $error = $_FILES['my_image']['error'];
+
+    if ($error === 0) {
+      if ($img_size > 125000) {
+        echo"<script>alert('Désolé, fichier trop grand')</script>";
+        echo"<script>window.location = 'MainPage.php';</script>";
+      }else {
+        $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+        $img_ex_lc = strtolower($img_ex);
+  
+        $allowed_exs = array("jpg", "jpeg", "png"); 
+  
+        if (in_array($img_ex_lc, $allowed_exs)) {
+          $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
+          $img_upload_path = 'uploads/'.$new_img_name;
+          move_uploaded_file($tmp_name, $img_upload_path);
+  
+          // Insert into Database
+          $sql2 = "INSERT INTO medicament (pharma_Id, Type, Nom, Miligramme, Prix, Quantite, imageURL)
+            VALUES ('$PharmaID ', '$Type', '$Nom', '$mili', '$Prix', '$QTE', '$new_img_name')";
+          
+          $result2 = $mysqli->query($sql2);
+          if ($result2){
+            $Nom = "";
+            $Prix = "";
+            $QTE = "";
+            $Type = "";
+            $new_img_name = "";
+            header("Location: MainPage.php");
+          }else{
+            echo"<script>alert('oops! erreur')</script>";
+            echo"<script>window.location = 'MainPage.php';</script>";
+          }
+        }else {
+          echo"<script>alert('Vous pouvez pas ajouter un fichier de ce type')</script>";
+          echo"<script>window.location = 'MainPage.php';</script>";
+        }
+      }
+    }elseif($error === 4) {
+      $new_img_name = "IMG-noimage.jpg";
+      $sql2 = "INSERT INTO medicament (pharma_Id, Type, Nom, Miligramme, Prix, Quantite, imageURL)
+              VALUES ('$PharmaID ', '$Type', '$Nom', '$mili', '$Prix', '$QTE', '$new_img_name')";
+      $result2 = $mysqli->query($sql2);
+      if ($result2){
+        $Nom = "";
+        $Prix = "";
+        $QTE = "";
+        $Type = "";
+        header("Location: MainPage.php");
+      }else{
+        echo"<script>alert('oops! erreur')</script>";
+        echo"<script>window.location = 'MainPage.php';</script>";
+      }
+    }else{
+      echo"<script>alert('oops! erreur')</script>";
+      echo"<script>window.location = 'MainPage.php';</script>";
+    }
   }
 }
 
@@ -72,7 +123,7 @@ if (isset($_POST['Submit'])){
       <div class="formulaire">
         <div class="titre"><h2>Formulaire</h2></div>
 
-        <form action="#" method="post">
+        <form action="#" method="post" enctype='multipart/form-data'>
 
           <div class="radioInput">
             <label for="type" class='labelname'> Type de Produit:</label>
@@ -121,22 +172,28 @@ if (isset($_POST['Submit'])){
             />
           </div>
 
-          <div class="radioInput">
-            <label for="Dispo" class='labelname'>Disponible:</label>
+          <div class="dataInput">
+            <label for="QTE"> Quantité:</label>
+            <input
+              type="number"
+              name="Qte"
+              id="Qte"
+              placeholder="Tapez la Quantité"
+              required     
+            />
+          </div>
 
-            <label class="radiochoice"> Oui 
-              <input type="radio" id="type" name="Dispo" checked="checked" value="Oui"/>
-              <span class="checkmark"></span>
-            </label>
-
-            <label class="radiochoice"> Non
-              <input type="radio" id="type" name="Dispo" value="Non"/>
-              <span class="checkmark"></span>
-            </label>
+          <div class="imageInput">
+            <label for="image">Choisir une image</label>
+            <input
+              type="file" 
+              name="my_image"
+              id="image"
+            />
           </div>
 
           <div class="dataInput">
-            <input type="submit" value="Ajouter" id="myBtn" name="Submit" />
+            <input type="submit" value="Ajouter Le Produit" id="myBtn" name="Submit" />
           </div>
 
         </form>
@@ -162,19 +219,20 @@ if (isset($_POST['Submit'])){
 
           if (isset($_POST['searchsub'])){
            $valueToSearch = $_POST['Rechercher'];
+           $valueToSearch = addslashes($valueToSearch);
            if($valueToSearch==""){
-            $query= "SELECT Med_Id, Type, Nom, Miligramme, Prix, Disponible FROM medicament where pharma_Id='$PharmaID'";
+            $query= "SELECT Med_Id, Type, Nom, Miligramme, Prix, Quantite, imageURL FROM medicament where pharma_Id='$PharmaID'";
             $var1 = 1;
             $search_result=filtrerTable($query, $var1);
            }
            else{
-           $query ="SELECT Med_Id, Type, Nom, Miligramme, Prix, Disponible FROM medicament where (Nom LIKE '%$valueToSearch%' and pharma_Id='$PharmaID')";
+           $query ="SELECT Med_Id, Type, Nom, Miligramme, Prix, Quantite, imageURL FROM medicament where (Nom LIKE '%$valueToSearch%' and pharma_Id='$PharmaID')";
            $var1 = 0;
            $search_result=filtrerTable($query, $var1);
            }
          }
             else{
-               $query= "SELECT Med_Id, Type, Nom, Miligramme, Prix, Disponible FROM medicament where pharma_Id='$PharmaID'";
+               $query= "SELECT Med_Id, Type, Nom, Miligramme, Prix, Quantite, imageURL FROM medicament where pharma_Id='$PharmaID'";
                $var1 = 1;
                $search_result=filtrerTable($query, $var1);
                
@@ -192,7 +250,8 @@ if (isset($_POST['Submit'])){
                  <th>Nom</th>
                  <th>Milligramme</th>
                  <th>prix</th>
-                 <th>Disponible</th>
+                 <th>Quantité</th>
+                 <th>Image</th>
                  <th>supprimer</th>
                  <th>modifier</th>
                </tr>
@@ -203,7 +262,8 @@ if (isset($_POST['Submit'])){
                   <td>". $row["Nom"]. "</td>
                   <td>". $row["Miligramme"]."</td>
                   <td>". $row["Prix"]."</td>
-                  <td><p class='statusdispo'>". $row["Disponible"]."</p></td>
+                  <td><p class='statusdispo'>". $row["Quantite"]."</p></td>
+                  <td class='imageshow'> <img src='uploads/". $row["imageURL"]."'></td>
                   <td class='centerbutton1'><a href='delete.php?id=". $row["Med_Id"]."' id='btn'><ion-icon name=trash-outline></ion-icon></a></td>
                   <td class='centerbutton1'> <button type='button' id=". $row["Med_Id"]." class='btn btn-success editbtn'> <ion-icon name=create-sharp></ion-icon> </button></td>
                   </tr>";
@@ -270,12 +330,7 @@ if (isset($_POST['Submit'])){
                 }
                 $('#NomP').val(data[1]);
                 $('#PrixP').val(data[3]);
-                if(data[4] == "Oui"){
-                  $("#typeD1").prop("checked", true);
-                }
-                else{
-                  $("#typeD2").prop("checked", true);
-                }
+                $('#QteP').val(data[4]);
                 $('#update_id').val($(this).attr('id'));
 
                 var arr2 = document.querySelectorAll('input[name="typeD"]');
@@ -300,7 +355,7 @@ if (isset($_POST['Submit'])){
     <script>
       var Elements = document.getElementsByClassName('statusdispo');
       for (let i=0; i< Elements.length; i++){
-          if (Elements[i].innerHTML == "Oui"){
+          if (Elements[i].innerHTML != "0"){
             Elements[i].style.color = "#388e3c";
             Elements[i].style.backgroundColor= "#c8e6c9";
           }
