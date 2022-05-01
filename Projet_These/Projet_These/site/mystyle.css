@@ -55,7 +55,7 @@ body {
 #pharmName {
   position: relative;
   color: whitesmoke;
-  margin-left: -75px;
+  margin-left: -2vh;
   font-size: 30px;
   font-weight: bold;
   margin-top: -10px;
@@ -105,14 +105,14 @@ body {
   padding: 15px 30px;
   border-radius: 20px;
   z-index: 1;
-  margin-top: auto;
+  max-height: 600px;
 }
 .formulaire .titre {
   color: #63a860;
   font-weight: 600;
   font-size: 1.5em;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   border-bottom: 4px solid #607d8b;
   display: inline-block;
   letter-spacing: 1px;
@@ -244,6 +244,24 @@ form .radioInput input {
   margin-right: 15px;
   margin-left: 15px;
 }
+
+.imageInput label{
+  display: block;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  color: #63a860;
+  text-decoration: underline;
+}
+
+.imageInput label:hover{
+  color: #607d8b;
+}
+
+.imageInput input{
+  display: none;
+}
+
 #myBtn {
   background-color: #607d8b;
   color: white;
@@ -272,7 +290,7 @@ form .radioInput input {
   background-color: white;
   padding: 20px;
   border-radius: 20px;
-  max-height: 550px;
+  max-height: 580px;
   overflow: auto;
 }
 
@@ -354,6 +372,11 @@ tr:hover {
   text-align: center;
 }
 
+.imageshow img{
+  width: 100%;
+	height: 100%;
+}
+
 /********** END TABLE **********/
 .flexTable {
   display: flex;
@@ -362,7 +385,7 @@ tr:hover {
   align-items: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .myWebSite .formulaire {
     max-width: 100%;
     margin-top: 35px;
