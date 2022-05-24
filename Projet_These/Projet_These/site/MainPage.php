@@ -14,6 +14,7 @@ if (isset($_POST['Submit'])){
   $PharmaID = $_SESSION['username'];
 
   $Nom = addslashes($Nom);
+
   if($Type == 'Material Pharmaceutique'){
     $mili = 0;
   }else{
@@ -26,6 +27,13 @@ if (isset($_POST['Submit'])){
     $tmp_name = $_FILES['my_image']['tmp_name'];
     $error = $_FILES['my_image']['error'];
 
+    $query= "SELECT Nom, Miligramme FROM medicament where Nom='$Nom' AND Miligramme='$mili'";
+    $result=$mysqli->query($query);
+    if($result->num_rows > 0){
+      echo"<script>alert('Vous avez deja insérer ce produit')</script>";
+      echo "<script>window.location = 'MainPage.php';</script>";
+    }
+    else{ 
     if ($error === 0) {
       if ($img_size > 125000) {
         echo"<script>alert('Désolé, fichier trop grand')</script>";
@@ -82,6 +90,7 @@ if (isset($_POST['Submit'])){
       echo"<script>window.location = 'MainPage.php';</script>";
     }
   }
+ } 
 }
 
 ?>
@@ -317,7 +326,6 @@ if (isset($_POST['Submit'])){
                 }).get();
 
                 console.log(data);
-
                 if (data[0] == "Medicament"){ 
                   $("#typeP1").prop("checked", true);
                   $('#miliP').val(data[2]);
@@ -332,7 +340,7 @@ if (isset($_POST['Submit'])){
                 $('#PrixP').val(data[3]);
                 $('#QteP').val(data[4]);
                 $('#update_id').val($(this).attr('id'));
-
+                
                 var arr2 = document.querySelectorAll('input[name="typeD"]');
                 var field2 = document.getElementById("miliP");
                   arr2.forEach((radio) => {
@@ -351,7 +359,6 @@ if (isset($_POST['Submit'])){
             });
         });
     </script>
-
     <script>
       var Elements = document.getElementsByClassName('statusdispo');
       for (let i=0; i< Elements.length; i++){
